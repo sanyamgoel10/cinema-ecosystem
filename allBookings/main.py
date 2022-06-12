@@ -3,17 +3,17 @@ from tinydb import TinyDB, Query
 
 app = Flask(__name__)
 
-@app.route("/", methods=['POST', 'GET'])
-def index():
-    return render_template('homePage.html')
+# @app.route("/", methods=['POST', 'GET'])
+# def index():
+#     return render_template('homePage.html')
 
 
-@app.route("/bookOrOrder", methods=['POST', 'GET'])
-def index1():
-    if request.form['choosing'] == 'food':
-        return render_template('makeOrder.html')
-    elif request.form['choosing'] == 'movie':
-        return render_template('makeBooking.html')
+# @app.route("/bookOrOrder", methods=['POST', 'GET'])
+# def index1():
+#     if request.form['choosing'] == 'food':
+#         return render_template('makeOrder.html')
+#     elif request.form['choosing'] == 'movie':
+#         return render_template('makeBooking.html')
 
 
 @app.route("/api/foodorder/insert", methods=['POST'])
