@@ -18,7 +18,7 @@ def index1():
 
 @app.route("/api/foodorder/insert", methods=['POST'])
 def insertfood():
-    fdb = TinyDB(r'allBookings/dbase/fooddb.json')
+    fdb = TinyDB(r'dbase/fooddb.json')
     userName = str(request.form["username"])
     abc = {'username':userName, 'Popcorn': int(request.form["Popcorn"]), 'Coke': int(request.form["Coke"]),
            'Nachos': int(request.form["Nachos"])}
@@ -31,7 +31,7 @@ def insertfood():
 
 @app.route("/api/movieticket/insert", methods=['POST', 'GET'])
 def insertmovie():
-    mdb = TinyDB(r'allBookings/dbase/moviedb.json')
+    mdb = TinyDB(r'dbase/moviedb.json')
     userName = request.form["username"]
     mName, mQuant = request.form["mname"], int(request.form["mquant"])
     abc1 = {'username': userName, 'mname': mName, 'mquant': str(mQuant)}
@@ -44,7 +44,7 @@ def insertmovie():
 
 @app.route("/api/foodorder/view", methods=['POST', 'GET'])
 def viewfood():
-    fdb = TinyDB(r'allBookings/dbase/fooddb.json')
+    fdb = TinyDB(r'dbase/fooddb.json')
     username = request.form["username"]
     User1 = Query()
     testing1= fdb.search(User1.username == username)
@@ -55,7 +55,7 @@ def viewfood():
 @app.route("/api/movieticket/view", methods=['POST', 'GET'])
 def viewmovie():
     # print(request.form)
-    mdb = TinyDB(r'allBookings/dbase/moviedb.json')
+    mdb = TinyDB(r'dbase/moviedb.json')
     username = request.form["username"]
     print("----------")
     print(username)

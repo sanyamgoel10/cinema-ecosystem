@@ -16,12 +16,12 @@ catalog_url = "http://127.0.0.1:8000"
 
 @app.route("/", methods=['POST', 'GET'])
 def index():
-    return render_template('login.html', message = "")
+    return render_template('login.html', message = "", uname="")
 
 
 @app.route("/login", methods=['POST', 'GET'])
 def index1():
-    db = TinyDB(r'UI/userdbase/auth.json')
+    db = TinyDB(r'userdbase/auth.json')
     User=Query()
     username = request.form['username']
     password = request.form['password']
@@ -39,12 +39,12 @@ def index1():
     if db.search(User.name == username)!=[] and db.search(User.name == username)[0]['pass']==password:
         return render_template('homePage.html', user = username, message ="Login Successful")
     else:
-        return render_template('login.html', message = "Login failed")
+        return render_template('login.html', message = "Login failed", uname="")
 
 
 @app.route("/register", methods=['POST'])
 def register():
-    db = TinyDB(r'UI/userdbase/auth.json')
+    db = TinyDB(r'userdbase/auth.json')
     username = request.form['username']
     password = request.form['password']
     # response = requests.post(authservice_url + '/registration', data = {'username':username, 'password' : password})
@@ -56,16 +56,16 @@ def register():
 
 @app.route("/logout", methods=['POST'])
 def logout():
-    db = TinyDB(r'UI/userdbase/auth.json')
+    db = TinyDB(r'userdbase/auth.json')
     jwt = request.form['jwt']
     print(jwt)
-    db.remove(where('name') == jwt)
+    #db.remove(where('name') == jwt)
     # headers = {'Authorization': 'Bearer '+jwt}
     # response = requests.post(authservice_url + '/logout/access', headers=headers)
     # response = response.json()
 
     # print(response)
-    return render_template('login.html', message = "Logged Out")
+    return render_template('login.html', message = "Logged Out successful for", uname=jwt)
 
 
 @app.route("/soap/catalog", methods=['POST', 'GET'])
