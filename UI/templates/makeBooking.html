@@ -1,0 +1,44 @@
+<html>
+<title>
+    Make Movie Booking
+</title>
+
+<body>
+    <h2>==========Now Playing==========</h2>
+    <br>
+
+    <form name="tblform" action="/insertmovieticket" method="post" enctype="multipart/form-data">
+        <input type="hidden" id="username" name="username" value="{{user}}">
+        <br>
+        <table>
+            <tr>
+                <th>Movie Name</th>
+                <th>Quantity</th>
+            </tr>
+            <tr>
+                <td>
+                    <select id="name" name="name">
+                    <option value="0">--Select Item--</option>
+                    {% for item in catalog %}
+                        <option value="{{item}}">{{item}}</option>
+                    {% endfor %}
+                    </select>
+                </td>
+                <td>
+                    <input type="number" value="0" id="quantity" name="moviequant">
+                </td>
+            </tr>
+        </table>
+        <button type="submit" value="submit">Submit</button>
+    </form>
+
+    <form method="post" action="/viewmovieticket">
+        <input type="hidden" id="username" name="username" value="{{user}}">
+        <button type="submit">view booking</button>
+    </form>
+
+    <br>
+    <br> {{message}}
+</body>
+
+</html>
