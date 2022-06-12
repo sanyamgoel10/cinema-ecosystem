@@ -11,8 +11,8 @@ from suds.client import Client
 app = Flask(__name__)
 
 #authservice_url = "http://127.0.0.1:5000"
-booking_url = "http://127.0.0.1:4500"
-catalog_url = "http://127.0.0.1:8000"
+booking_url = "http://localhost:4500"
+catalog_url = "http://localhost:8000"
 
 @app.route("/", methods=['POST', 'GET'])
 def index():
