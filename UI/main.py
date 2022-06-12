@@ -5,7 +5,7 @@ from os import access
 from urllib import request
 from flask import *
 import requests
-from tinydb import TinyDB, Query
+from tinydb import TinyDB, Query, where
 from suds.client import Client
 
 app = Flask(__name__)
@@ -21,42 +21,51 @@ def index():
 
 @app.route("/login", methods=['POST', 'GET'])
 def index1():
+    db = TinyDB(r'UI/userdbase/auth.json')
+    User=Query()
     username = request.form['username']
     password = request.form['password']
-    response = requests.post(authservice_url + '/login', data = {'username':username, 'password' : password})
-    response = response.json()
-    try:
-        if(len(response["access_token"])>10):
-            access_token = response["access_token"]
-            refresh_token = response["refresh_token"]
-            message = response["message"]
-            return render_template('homePage.html', user = username, access_token = response["access_token"], refresh_token = response["refresh_token"], message = response["message"])
-    except:    
+    # response = requests.post(authservice_url + '/login', data = {'username':username, 'password' : password})
+    # response = response.json()
+    # try:
+        # if(len(response["access_token"])>10):
+        #     access_token = response["access_token"]
+        #     refresh_token = response["refresh_token"]
+        #     message = response["message"]
+        #     return render_template('homePage.html', user = username, message ="Login Successful")
+    # except:    
+    #     return render_template('login.html', message = "Login failed")
+    #
+    if db.search(User.name == username)!=[] and db.search(User.name == username)[0]['pass']==password:
+        return render_template('homePage.html', user = username, message ="Login Successful")
+    else:
         return render_template('login.html', message = "Login failed")
 
 
 @app.route("/register", methods=['POST'])
 def register():
+    db = TinyDB(r'UI/userdbase/auth.json')
     username = request.form['username']
     password = request.form['password']
-    response = requests.post(authservice_url + '/registration', data = {'username':username, 'password' : password})
-    response = response.json()
-    print(response)
-    try:
-        if(len(response["access_token"])>10):
-            return render_template('homePage.html', access_token = response["access_token"], refresh_token = response["refresh_token"], message = response["message"])
-    except:    
-        return render_template('login.html', message = "Login failed")
+    # response = requests.post(authservice_url + '/registration', data = {'username':username, 'password' : password})
+    # response = response.json()
+    # print(response)
+    db.insert({'name': username, 'pass': password})
+    return render_template('homePage.html', message = "Registration Successful",user=username)
 
 
 @app.route("/logout", methods=['POST'])
 def logout():
+    db = TinyDB(r'UI/userdbase/auth.json')
     jwt = request.form['jwt']
-    headers = {'Authorization': 'Bearer '+jwt}
-    response = requests.post(authservice_url + '/logout/access', headers=headers)
-    response = response.json()
-    print(response)
-    return render_template('login.html', message = response)
+    print(jwt)
+    db.remove(where('name') == jwt)
+    # headers = {'Authorization': 'Bearer '+jwt}
+    # response = requests.post(authservice_url + '/logout/access', headers=headers)
+    # response = response.json()
+
+    # print(response)
+    return render_template('login.html', message = "Logged Out")
 
 
 @app.route("/soap/catalog", methods=['POST', 'GET'])
